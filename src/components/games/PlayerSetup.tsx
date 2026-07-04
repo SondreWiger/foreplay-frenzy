@@ -35,6 +35,7 @@ export function PlayerSetup({ onComplete }: { onComplete: () => void }) {
       arousal: 1,
       obediencePoints: 0,
       isSubmissive: false,
+      drinks: 0,
     };
     addPlayer(player);
     setNewName("");

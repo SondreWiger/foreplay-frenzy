@@ -11,6 +11,8 @@ import type {
   KinkLimit,
   SafeWordStatus,
   PlayerMode,
+  GameVibe,
+  SessionRecord,
 } from "@/types";
 import { generateId } from "@/lib/utils";
 
@@ -41,6 +43,7 @@ interface GameState {
   showLimits: boolean;
   showAftercare: boolean;
   darkMode: boolean;
+  soundEnabled: boolean;
 
   // Actions
   setPlayerMode: (mode: PlayerMode) => void;
@@ -48,7 +51,7 @@ interface GameState {
   removePlayer: (id: string) => void;
   updatePlayer: (id: string, updates: Partial<Player>) => void;
 
-  startSession: (mode: GameMode) => void;
+  startSession: (mode: GameMode, vibe?: GameVibe) => void;
   endSession: () => void;
   setPhase: (phase: GameSession["phase"]) => void;
   setLevel: (level: GameLevel) => void;
@@ -56,6 +59,7 @@ interface GameState {
 
   addToHistory: (action: Omit<GameAction, "id" | "timestamp">) => void;
   addScore: (playerId: string, points: number) => void;
+  addDrink: (playerId: string, amount: number) => void;
 
   setActiveCard: (card: GameCard | null) => void;
 
@@ -73,6 +77,7 @@ interface GameState {
   setShowLimits: (show: boolean) => void;
   setShowAftercare: (show: boolean) => void;
   toggleDarkMode: () => void;
+  toggleSound: () => void;
 
   // Reset
   resetAll: () => void;
@@ -85,6 +90,7 @@ const defaultPlayer: Player = {
   arousal: 1,
   obediencePoints: 0,
   isSubmissive: false,
+  drinks: 0,
 };
 
 export const useGameStore = create<GameState>()(
@@ -103,6 +109,7 @@ export const useGameStore = create<GameState>()(
       showLimits: false,
       showAftercare: false,
       darkMode: true,
+      soundEnabled: false,
 
       setPlayerMode: (mode) => set({ playerMode: mode }),
 
@@ -117,7 +124,7 @@ export const useGameStore = create<GameState>()(
           players: s.players.map((p) => (p.id === id ? { ...p, ...updates } : p)),
         })),
 
-      startSession: (mode) => {
+      startSession: (mode, vibe = "spicy") => {
         const { players } = get();
         const session: GameSession = {
           id: generateId(),
@@ -129,17 +136,44 @@ export const useGameStore = create<GameState>()(
           score: Object.fromEntries(players.map((p) => [p.id, 0])),
           startedAt: new Date().toISOString(),
           history: [],
+          vibe,
         };
-        set({ session });
+        set({ session, safeWordStatus: "green" });
       },
 
-      endSession: () =>
+      endSession: () => {
+        const { session, players } = get();
+        if (session) {
+          // Save to history
+          const record: SessionRecord = {
+            id: session.id,
+            mode: session.mode,
+            vibe: session.vibe,
+            playerNames: players.map((p) => p.name),
+            totalRounds: session.history.length,
+            topScorer: Object.entries(session.score).sort(([, a], [, b]) => b - a)[0]?.[0]
+              ? players.find((p) => p.id === Object.entries(session.score).sort(([, a], [, b]) => b - a)[0][0])?.name || ""
+              : "",
+            topScore: Math.max(...Object.values(session.score), 0),
+            startedAt: session.startedAt,
+            endedAt: new Date().toISOString(),
+            duration: Math.round(
+              (new Date().getTime() - new Date(session.startedAt).getTime()) / 60000
+            ),
+          };
+          const history = JSON.parse(localStorage.getItem("session-history") || "[]");
+          history.unshift(record);
+          // Keep last 50 sessions
+          if (history.length > 50) history.splice(50);
+          localStorage.setItem("session-history", JSON.stringify(history));
+        }
         set((s) => ({
           session: s.session
             ? { ...s.session, phase: "ended", endedAt: new Date().toISOString() }
             : null,
           activeCard: null,
-        })),
+        }));
+      },
 
       setPhase: (phase) =>
         set((s) => ({
@@ -189,6 +223,13 @@ export const useGameStore = create<GameState>()(
                 },
               }
             : null,
+        })),
+
+      addDrink: (playerId, amount) =>
+        set((s) => ({
+          players: s.players.map((p) =>
+            p.id === playerId ? { ...p, drinks: p.drinks + amount } : p
+          ),
         })),
 
       setActiveCard: (card) => set({ activeCard: card }),
@@ -248,6 +289,7 @@ export const useGameStore = create<GameState>()(
       setShowLimits: (show) => set({ showLimits: show }),
       setShowAftercare: (show) => set({ showAftercare: show }),
       toggleDarkMode: () => set((s) => ({ darkMode: !s.darkMode })),
+      toggleSound: () => set((s) => ({ soundEnabled: !s.soundEnabled })),
 
       resetAll: () =>
         set({
@@ -269,6 +311,7 @@ export const useGameStore = create<GameState>()(
         playerMode: state.playerMode,
         consentProfiles: state.consentProfiles,
         darkMode: state.darkMode,
+        soundEnabled: state.soundEnabled,
       }),
     }
   )

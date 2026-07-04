@@ -16,13 +16,24 @@ export type CardType =
   | "dice"
   | "roleplay"
   | "challenge"
-  | "hypno";
+  | "hypno"
+  | "would-you-rather"
+  | "most-likely-to"
+  | "two-truths-lie"
+  | "drinking"
+  | "charades"
+  | "story"
+  | "this-or-that"
+  | "rate"
+  | "question";
 
 export type ConsentStatus = "pending" | "approved" | "denied";
 
 export type SafeWordStatus = "green" | "yellow" | "red";
 
 export type SessionPhase = "setup" | "playing" | "paused" | "aftercare" | "ended";
+
+export type GameVibe = "spicy" | "party" | "chill" | "dark";
 
 // ============================================================
 // PLAYER
@@ -35,6 +46,7 @@ export interface Player {
   arousal: ArousalLevel;
   obediencePoints: number;
   isSubmissive: boolean;
+  drinks: number;
 }
 
 // ============================================================
@@ -75,6 +87,10 @@ export interface GameCard {
   duration?: number; // seconds
   points?: number;
   isExtreme?: boolean;
+  optionA?: string;
+  optionB?: string;
+  choices?: string[];
+  drinking?: boolean;
 }
 
 export interface CardPack {
@@ -86,6 +102,7 @@ export interface CardPack {
   cards: GameCard[];
   isOfficial: boolean;
   tags: string[];
+  vibe?: GameVibe;
 }
 
 // ============================================================
@@ -101,7 +118,18 @@ export type GameMode =
   | "roleplay-roulette"
   | "edging-control"
   | "kink-charades"
-  | "free-play";
+  | "free-play"
+  // Party / Friend group
+  | "drinking-game"
+  | "who-most-likely"
+  | "would-you-rather"
+  | "two-truths-lie"
+  | "story-builder"
+  | "this-or-that"
+  | "rate-me"
+  | "king-of-the-table"
+  | "hot-take"
+  | "emoji-guess";
 
 export interface GameSession {
   id: string;
@@ -114,6 +142,7 @@ export interface GameSession {
   startedAt: string;
   endedAt?: string;
   history: GameAction[];
+  vibe: GameVibe;
 }
 
 export interface GameAction {
@@ -121,7 +150,7 @@ export interface GameAction {
   cardId?: string;
   playerId: string;
   action: string;
-  result?: "completed" | "skipped" | "failed";
+  result?: "completed" | "skipped" | "failed" | "voted";
   timestamp: string;
   points: number;
 }
@@ -138,6 +167,17 @@ export interface DiceRoll {
   toy?: string;
   hole?: string;
   modifier?: string;
+}
+
+// ============================================================
+// DRINKING
+// ============================================================
+
+export interface DrinkingAction {
+  type: "sip" | "shot" | "chug" | "skip" | "give" | "take";
+  amount: number;
+  target?: string; // player id
+  reason: string;
 }
 
 // ============================================================
@@ -163,4 +203,34 @@ export interface TimerState {
   elapsed: number; // seconds
   duration: number; // total seconds
   label: string;
+}
+
+// ============================================================
+// SESSION HISTORY
+// ============================================================
+
+export interface SessionRecord {
+  id: string;
+  mode: GameMode;
+  vibe: GameVibe;
+  playerNames: string[];
+  totalRounds: number;
+  topScorer: string;
+  topScore: number;
+  startedAt: string;
+  endedAt: string;
+  duration: number; // minutes
+}
+
+// ============================================================
+// ACHIEVEMENTS
+// ============================================================
+
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  emoji: string;
+  unlockedAt?: string;
+  condition: string;
 }
