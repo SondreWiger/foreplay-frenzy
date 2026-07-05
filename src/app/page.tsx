@@ -39,6 +39,10 @@ export default function Home() {
   const { session, setPhase, currentVibe, setVibe, round } = useGameStore();
   const [screen, setScreen] = useState<Screen>("home");
   const [hasChosenVibe, setHasChosenVibe] = useState(false);
+  const [hoveredVibe, setHoveredVibe] = useState<GameVibe | null>(null);
+
+  // The displayed vibe is the hovered one (for preview) or the actual selected one
+  const displayVibe = hoveredVibe || currentVibe;
 
   // Check if vibe was previously set
   useEffect(() => {
@@ -70,7 +74,7 @@ export default function Home() {
   const currentLevel = session ? getProgressionLevel(round, currentVibe) : "tease";
 
   return (
-    <div className={cn("min-h-dvh min-h-screen relative overflow-x-hidden", `vibe-${currentVibe}`)} style={{ background: "var(--vibe-card)" }}>
+    <div className={cn("min-h-dvh min-h-screen relative overflow-x-hidden transition-colors duration-500", `vibe-${screen === "home" && !session && !hasChosenVibe ? displayVibe : currentVibe}`)} style={{ background: "var(--vibe-card)" }}>
       {/* Background */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--vibe-bg-from),transparent_70%)]" />
@@ -103,6 +107,8 @@ export default function Home() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.1 }}
+                    onMouseEnter={() => setHoveredVibe(v.id)}
+                    onMouseLeave={() => setHoveredVibe(null)}
                   >
                     <Card
                       variant="elevated"
