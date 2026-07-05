@@ -80,9 +80,13 @@ export function GameCard({
         className={cn(
           "relative w-full min-h-[260px] sm:min-h-[300px] rounded-2xl border-2 cursor-pointer transition-all duration-300",
           isFlipped
-            ? "bg-blood-800 border-blood-500"
-            : "bg-gradient-to-br from-blood-900 via-blood-800 to-blood-900 border-blood-600/50"
+            ? "border-[var(--vibe-card-elevated-border)]"
+            : "border-[var(--vibe-card-elevated-border)]"
         )}
+        style={{
+          backgroundColor: isFlipped ? "var(--vibe-card-elevated)" : "var(--vibe-card)",
+          borderColor: "var(--vibe-card-elevated-border)",
+        }}
         onClick={handleFlip}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -162,7 +166,12 @@ export function GameCard({
                         e.stopPropagation();
                         onAccept();
                       }}
-                      className="flex-1 py-3 rounded-xl bg-neon-pink/20 border border-neon-pink/50 text-neon-pink font-bold text-sm hover:bg-neon-pink/30 transition-colors min-h-[44px]"
+                      className="flex-1 py-3 rounded-xl border font-bold text-sm transition-colors min-h-[44px]"
+                      style={{
+                        backgroundColor: "var(--vibe-accent-dim)",
+                        borderColor: "color-mix(in srgb, var(--vibe-accent) 50%, transparent)",
+                        color: "var(--vibe-accent)",
+                      }}
                     >
                       ACCEPT 🔥
                     </motion.button>

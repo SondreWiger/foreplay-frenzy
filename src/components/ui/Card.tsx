@@ -13,10 +13,22 @@ interface CardProps extends MotionProps {
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ children, className, variant = "default", onClick, ...motionProps }, ref) => {
-    const variants = {
-      default: "bg-blood-900/80 border-blood-700/50",
-      elevated: "bg-blood-900/90 border-blood-600/50 shadow-xl shadow-blood-900/50",
-      glow: "bg-blood-900/90 border-blood-500/50 shadow-xl shadow-blood-500/30 animate-pulse-glow",
+    const variantStyles: Record<string, React.CSSProperties> = {
+      default: {
+        backgroundColor: "var(--vibe-card)",
+        borderColor: "var(--vibe-card-border)",
+      },
+      elevated: {
+        backgroundColor: "var(--vibe-card-elevated)",
+        borderColor: "var(--vibe-card-elevated-border)",
+        boxShadow: `0 20px 40px var(--vibe-shadow)`,
+      },
+      glow: {
+        backgroundColor: "var(--vibe-card-elevated)",
+        borderColor: "var(--vibe-card-elevated-border)",
+        boxShadow: `0 0 30px var(--vibe-glow)`,
+        animation: "pulse-glow 2s ease-in-out infinite",
+      },
     };
 
     return (
@@ -25,10 +37,11 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
         whileHover={onClick ? { scale: 1.02 } : undefined}
         className={cn(
           "rounded-2xl border backdrop-blur-sm",
-          variants[variant],
+          variant === "glow" && "animate-pulse-glow",
           onClick && "cursor-pointer",
           className
         )}
+        style={variantStyles[variant]}
         onClick={onClick}
         {...motionProps}
       >

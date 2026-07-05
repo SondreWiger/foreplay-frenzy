@@ -33,9 +33,126 @@
   --animate-shake: shake 0.5s ease-in-out;
 }
 
+/* ============================================================
+   VIBE THEME SYSTEM
+   Each vibe sets CSS custom properties that components use.
+   ============================================================ */
+
+/* Default / Spicy (hot pink + blood red) */
+:root {
+  --vibe-bg-from: rgba(220, 38, 38, 0.1);
+  --vibe-bg-to: rgba(127, 29, 29, 0.15);
+  --vibe-primary: #991b1b;
+  --vibe-primary-hover: #dc2626;
+  --vibe-accent: #ff2d95;
+  --vibe-accent-dim: rgba(255, 45, 149, 0.2);
+  --vibe-card: rgba(26, 5, 5, 0.8);
+  --vibe-card-border: rgba(127, 29, 29, 0.5);
+  --vibe-card-elevated: rgba(26, 5, 5, 0.9);
+  --vibe-card-elevated-border: rgba(153, 27, 27, 0.5);
+  --vibe-scroll-track: #1a0505;
+  --vibe-scroll-thumb: #7f1d1d;
+  --vibe-scroll-hover: #991b1b;
+  --vibe-selection: rgba(220, 38, 38, 0.4);
+  --vibe-glow: rgba(220, 38, 38, 0.3);
+  --vibe-glow-strong: rgba(220, 38, 38, 0.6);
+  --vibe-shadow: rgba(220, 38, 38, 0.2);
+  --vibe-neon-shadow: rgba(255, 45, 149, 0.2);
+  --vibe-banner-from: rgba(153, 27, 27, 0.8);
+  --vibe-banner-border: rgba(127, 29, 29, 0.3);
+  --vibe-button-shadow: rgba(220, 38, 38, 0.2);
+  --vibe-danger: #b91c1c;
+  --vibe-danger-hover: #dc2626;
+}
+
+/* Party (amber + gold + orange) */
+.vibe-party {
+  --vibe-bg-from: rgba(245, 158, 11, 0.08);
+  --vibe-bg-to: rgba(234, 88, 12, 0.1);
+  --vibe-primary: #b45309;
+  --vibe-primary-hover: #d97706;
+  --vibe-accent: #f59e0b;
+  --vibe-accent-dim: rgba(245, 158, 11, 0.2);
+  --vibe-card: rgba(30, 20, 5, 0.8);
+  --vibe-card-border: rgba(120, 80, 20, 0.4);
+  --vibe-card-elevated: rgba(30, 20, 5, 0.9);
+  --vibe-card-elevated-border: rgba(180, 110, 20, 0.4);
+  --vibe-scroll-track: #1a1205;
+  --vibe-scroll-thumb: #92400e;
+  --vibe-scroll-hover: #b45309;
+  --vibe-selection: rgba(245, 158, 11, 0.35);
+  --vibe-glow: rgba(245, 158, 11, 0.25);
+  --vibe-glow-strong: rgba(245, 158, 11, 0.5);
+  --vibe-shadow: rgba(245, 158, 11, 0.15);
+  --vibe-neon-shadow: rgba(251, 191, 36, 0.2);
+  --vibe-banner-from: rgba(120, 53, 15, 0.8);
+  --vibe-banner-border: rgba(146, 64, 14, 0.3);
+  --vibe-button-shadow: rgba(245, 158, 11, 0.2);
+  --vibe-danger: #b45309;
+  --vibe-danger-hover: #d97706;
+}
+
+/* Chill (teal + cyan + cool blue) */
+.vibe-chill {
+  --vibe-bg-from: rgba(20, 184, 166, 0.08);
+  --vibe-bg-to: rgba(6, 182, 212, 0.1);
+  --vibe-primary: #0f766e;
+  --vibe-primary-hover: #14b8a6;
+  --vibe-accent: #2dd4bf;
+  --vibe-accent-dim: rgba(45, 212, 191, 0.2);
+  --vibe-card: rgba(5, 20, 20, 0.8);
+  --vibe-card-border: rgba(20, 100, 100, 0.4);
+  --vibe-card-elevated: rgba(5, 20, 20, 0.9);
+  --vibe-card-elevated-border: rgba(20, 140, 140, 0.4);
+  --vibe-scroll-track: #0a1515;
+  --vibe-scroll-thumb: #115e59;
+  --vibe-scroll-hover: #0f766e;
+  --vibe-selection: rgba(20, 184, 166, 0.3);
+  --vibe-glow: rgba(20, 184, 166, 0.25);
+  --vibe-glow-strong: rgba(20, 184, 166, 0.5);
+  --vibe-shadow: rgba(20, 184, 166, 0.15);
+  --vibe-neon-shadow: rgba(45, 212, 191, 0.2);
+  --vibe-banner-from: rgba(15, 118, 110, 0.8);
+  --vibe-banner-border: rgba(17, 94, 89, 0.3);
+  --vibe-button-shadow: rgba(20, 184, 166, 0.2);
+  --vibe-danger: #0f766e;
+  --vibe-danger-hover: #14b8a6;
+}
+
+/* Dark (deep crimson + near-black + blood) */
+.vibe-dark {
+  --vibe-bg-from: rgba(127, 29, 29, 0.15);
+  --vibe-bg-to: rgba(45, 0, 0, 0.2);
+  --vibe-primary: #7f1d1d;
+  --vibe-primary-hover: #991b1b;
+  --vibe-accent: #ef4444;
+  --vibe-accent-dim: rgba(239, 68, 68, 0.15);
+  --vibe-card: rgba(15, 2, 2, 0.9);
+  --vibe-card-border: rgba(100, 15, 15, 0.5);
+  --vibe-card-elevated: rgba(15, 2, 2, 0.95);
+  --vibe-card-elevated-border: rgba(127, 29, 29, 0.6);
+  --vibe-scroll-track: #0a0101;
+  --vibe-scroll-thumb: #7f1d1d;
+  --vibe-scroll-hover: #991b1b;
+  --vibe-selection: rgba(127, 29, 29, 0.5);
+  --vibe-glow: rgba(127, 29, 29, 0.35);
+  --vibe-glow-strong: rgba(153, 27, 27, 0.6);
+  --vibe-shadow: rgba(127, 29, 29, 0.25);
+  --vibe-neon-shadow: rgba(239, 68, 68, 0.15);
+  --vibe-banner-from: rgba(80, 10, 10, 0.9);
+  --vibe-banner-border: rgba(100, 15, 15, 0.4);
+  --vibe-button-shadow: rgba(127, 29, 29, 0.3);
+  --vibe-danger: #7f1d1d;
+  --vibe-danger-hover: #991b1b;
+}
+
+/* ============================================================
+   GLOBAL VIBE STYLES
+   ============================================================ */
+
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(220, 38, 38, 0.6); }
+  0%, 100% { box-shadow: 0 0 20px var(--vibe-glow); }
+  50% { box-shadow: 0 0 40px var(--vibe-glow-strong); }
 }
 
 @keyframes card-flip {
@@ -60,15 +177,15 @@
   75% { transform: translateX(5px); }
 }
 
-/* Scrollbar */
+/* Scrollbar - uses vibe vars */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #1a0505; }
-::-webkit-scrollbar-thumb { background: #7f1d1d; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #991b1b; }
+::-webkit-scrollbar-track { background: var(--vibe-scroll-track); }
+::-webkit-scrollbar-thumb { background: var(--vibe-scroll-thumb); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--vibe-scroll-hover); }
 
 /* Selection */
 ::selection {
-  background: rgba(220, 38, 38, 0.4);
+  background: var(--vibe-selection);
   color: white;
 }
 

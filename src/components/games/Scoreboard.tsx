@@ -14,7 +14,7 @@ export function Scoreboard() {
   );
 
   return (
-    <div className="bg-blood-900/80 border border-blood-700/50 rounded-2xl p-3 sm:p-4">
+    <div className="border rounded-2xl p-3 sm:p-4" style={{ backgroundColor: "var(--vibe-card)", borderColor: "var(--vibe-card-border)" }}>
       <h3 className="text-[10px] sm:text-xs font-bold tracking-widest text-white/40 mb-2 sm:mb-3 text-center">
         SCOREBOARD
       </h3>
@@ -27,8 +27,9 @@ export function Scoreboard() {
             transition={{ delay: i * 0.1 }}
             className={cn(
               "flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-xl",
-              session.currentTurn === player.id && "bg-blood-800/50 border border-blood-600/30"
+              session.currentTurn === player.id && "border"
             )}
+            style={session.currentTurn === player.id ? { backgroundColor: "var(--vibe-card-elevated)", borderColor: "var(--vibe-card-elevated-border)" } : undefined}
           >
             <span className="text-sm sm:text-lg font-bold text-white/30 w-5 sm:w-6 text-center">
               {i + 1}

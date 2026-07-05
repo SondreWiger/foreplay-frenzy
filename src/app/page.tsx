@@ -70,11 +70,11 @@ export default function Home() {
   const currentLevel = session ? getProgressionLevel(round, currentVibe) : "tease";
 
   return (
-    <div className="min-h-dvh min-h-screen bg-blood-950 relative overflow-x-hidden">
+    <div className={cn("min-h-dvh min-h-screen relative overflow-x-hidden", `vibe-${currentVibe}`)} style={{ background: "var(--vibe-card)" }}>
       {/* Background */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(220,38,38,0.1),transparent_70%)]" />
-        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-[radial-gradient(ellipse_at_bottom,rgba(127,29,29,0.15),transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--vibe-bg-from),transparent_70%)]" />
+        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-[radial-gradient(ellipse_at_bottom,var(--vibe-bg-to),transparent_70%)]" />
       </div>
 
       {session && session.phase === "playing" && <SafeWordButton />}
@@ -179,7 +179,7 @@ export default function Home() {
                   { emoji: "⭐", title: "Rate Me" },
                   { emoji: "🔥", title: "Hot Takes" },
                 ].map((f) => (
-                  <div key={f.title} className="bg-blood-900/50 border border-blood-800/30 rounded-xl p-2.5 text-center">
+                  <div key={f.title} className="border rounded-xl p-2.5 text-center" style={{ backgroundColor: "var(--vibe-card)", borderColor: "var(--vibe-card-border)" }}>
                     <div className="text-xl mb-0.5">{f.emoji}</div>
                     <p className="text-[9px] sm:text-[10px] font-bold text-white/70">{f.title}</p>
                   </div>
@@ -195,7 +195,7 @@ export default function Home() {
                   { emoji: "⏰", title: "Timed Challenges" },
                   { emoji: "🌟", title: "Rate & Rank" },
                 ].map((f) => (
-                  <div key={f.title} className="bg-blood-900/50 border border-blood-800/30 rounded-xl p-2.5 text-center">
+                  <div key={f.title} className="border rounded-xl p-2.5 text-center" style={{ backgroundColor: "var(--vibe-card)", borderColor: "var(--vibe-card-border)" }}>
                     <div className="text-xl mb-0.5">{f.emoji}</div>
                     <p className="text-[9px] sm:text-[10px] font-bold text-white/70">{f.title}</p>
                   </div>
@@ -211,7 +211,7 @@ export default function Home() {
                   { emoji: "🔥", title: "Hot Takes" },
                   { emoji: "😈", title: "Gets Filthy" },
                 ].map((f) => (
-                  <div key={f.title} className="bg-blood-900/50 border border-blood-800/30 rounded-xl p-2.5 text-center">
+                  <div key={f.title} className="border rounded-xl p-2.5 text-center" style={{ backgroundColor: "var(--vibe-card)", borderColor: "var(--vibe-card-border)" }}>
                     <div className="text-xl mb-0.5">{f.emoji}</div>
                     <p className="text-[9px] sm:text-[10px] font-bold text-white/70">{f.title}</p>
                   </div>
@@ -227,7 +227,7 @@ export default function Home() {
                   { emoji: "⛓️", title: "BDSM Prompts" },
                   { emoji: "🖤", title: "No Limits" },
                 ].map((f) => (
-                  <div key={f.title} className="bg-blood-900/50 border border-red-800/20 rounded-xl p-2.5 text-center">
+                  <div key={f.title} className="border rounded-xl p-2.5 text-center" style={{ backgroundColor: "var(--vibe-card)", borderColor: "var(--vibe-card-border)" }}>
                     <div className="text-xl mb-0.5">{f.emoji}</div>
                     <p className="text-[9px] sm:text-[10px] font-bold text-white/70">{f.title}</p>
                   </div>
@@ -308,7 +308,7 @@ export default function Home() {
               <Button onClick={() => setScreen("home")} variant="ghost" size="sm" className="mb-4 sm:mb-6 min-h-[44px]">← Back</Button>
               <h2 className="text-xl font-bold text-white">Settings</h2>
               <div className="space-y-3">
-                <div className="bg-blood-900/50 border border-blood-800/30 rounded-xl p-4">
+                <div className="border rounded-xl p-4" style={{ backgroundColor: "var(--vibe-card)", borderColor: "var(--vibe-card-border)" }}>
                   <p className="text-sm font-bold text-white mb-2">Current Vibe</p>
                   <div className="grid grid-cols-2 gap-2">
                     {vibes.map((v) => (
@@ -317,15 +317,16 @@ export default function Home() {
                         onClick={() => setVibe(v.id)}
                         className={cn(
                           "p-3 rounded-xl border text-center transition-all text-xs",
-                          currentVibe === v.id ? `${v.bgColor} ${v.color} font-bold` : "bg-blood-800/30 border-blood-700/20 text-white/40"
+                          currentVibe === v.id ? `${v.bgColor} ${v.color} font-bold` : "text-white/40 hover:bg-white/10"
                         )}
+                        style={currentVibe !== v.id ? { backgroundColor: "var(--vibe-card-elevated)", borderColor: "var(--vibe-card-border)" } : undefined}
                       >
                         {v.emoji} {v.name}
                       </button>
                     ))}
                   </div>
                 </div>
-                <div className="bg-blood-900/50 border border-blood-800/30 rounded-xl p-4">
+                <div className="border rounded-xl p-4" style={{ backgroundColor: "var(--vibe-card)", borderColor: "var(--vibe-card-border)" }}>
                   <p className="text-sm font-bold text-white mb-2">Data</p>
                   <p className="text-xs text-white/40 mb-3">All data is stored locally on your device.</p>
                   <Button onClick={() => { if (confirm("Clear all data? This cannot be undone.")) { localStorage.clear(); window.location.reload(); } }} variant="danger" size="sm">🗑️ Clear All Data</Button>
@@ -338,7 +339,7 @@ export default function Home() {
           {session && session.phase === "playing" && (
             <motion.div key="playing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4 sm:space-y-5">
               {/* Progression Banner */}
-              <div className="bg-blood-900/80 border border-blood-700/30 rounded-xl px-3 py-2 flex items-center justify-between">
+              <div className="border rounded-xl px-3 py-2 flex items-center justify-between" style={{ backgroundColor: "var(--vibe-banner-from)", borderColor: "var(--vibe-banner-border)" }}>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-white/40">Round {round + 1}</span>
                   {currentVibe === "party" ? (
@@ -368,9 +369,10 @@ export default function Home() {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="bg-gradient-to-r from-blood-600/30 to-neon-pink/10 border border-blood-500/30 rounded-xl p-3 text-center"
+                    className="border rounded-xl p-3 text-center"
+                    style={{ background: "linear-gradient(to right, var(--vibe-banner-from), var(--vibe-accent-dim))", borderColor: "var(--vibe-card-border)" }}
                   >
-                    <p className="text-sm font-bold text-neon-pink">{escalationMsg}</p>
+                    <p className="text-sm font-bold" style={{ color: "var(--vibe-accent)" }}>{escalationMsg}</p>
                   </motion.div>
                 )}
               </AnimatePresence>
