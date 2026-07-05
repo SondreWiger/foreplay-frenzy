@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useGameStore } from "@/stores/gameStore";
 import { Button } from "@/components/ui/Button";
 
-const affirmations = [
+const nsfwAffirmations = [
   "You are safe. You are loved. You are enough.",
   "That was incredible. You were amazing.",
   "Take a deep breath. You did so well.",
@@ -17,8 +17,39 @@ const affirmations = [
   "You are desired. You are precious.",
 ];
 
+const partyAffirmations = [
+  "That was a blast! You all crushed it!",
+  "What a round! Who's ready for more?",
+  "You're a legend. Absolute icon behavior.",
+  "That was so fun — we need to do this more often!",
+  "Cheers to us! We really know how to party.",
+  "You brought the energy tonight. Respect.",
+  "That was iconic. No one tops that.",
+  "We're basically professional fun-havers at this point.",
+  "Take a breather, grab a snack — you earned it!",
+  "That's a core memory right there.",
+];
+
+const nsfwTips = [
+  "💧 Drink water",
+  "🤗 Hold each other",
+  "💬 Talk about what you liked",
+  "🩹 Check for any marks or soreness",
+];
+
+const partyTips = [
+  "💧 Hydrate!",
+  "📸 Take a group selfie",
+  "🗣️ Share your favorite moment",
+  "🎉 Plan the next round",
+];
+
 export function AftercareModal() {
-  const { showAftercare, setShowAftercare, endSession, setPhase } = useGameStore();
+  const { showAftercare, setShowAftercare, endSession, setPhase, currentVibe } = useGameStore();
+
+  const isParty = currentVibe === "party";
+  const affirmations = isParty ? partyAffirmations : nsfwAffirmations;
+  const tips = isParty ? partyTips : nsfwTips;
 
   const handleEnd = () => {
     endSession();
@@ -45,8 +76,10 @@ export function AftercareModal() {
             exit={{ scale: 0.9, y: 20 }}
             className="bg-blood-900 border border-blood-700/50 rounded-2xl p-5 sm:p-8 max-w-md w-full text-center space-y-4 sm:space-y-6"
           >
-            <div className="text-5xl sm:text-6xl">💚</div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white">Aftercare Time</h2>
+            <div className="text-5xl sm:text-6xl">{isParty ? "🎉" : "💚"}</div>
+            <h2 className="text-xl sm:text-2xl font-bold text-white">
+              {isParty ? "Great Game!" : "Aftercare Time"}
+            </h2>
 
             <div className="bg-blood-800/50 rounded-xl p-3 sm:p-4">
               <p className="text-sm sm:text-base text-white/80 italic">
@@ -55,10 +88,9 @@ export function AftercareModal() {
             </div>
 
             <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-white/60">
-              <p>💧 Drink water</p>
-              <p>🤗 Hold each other</p>
-              <p>💬 Talk about what you liked</p>
-              <p>🩹 Check for any marks or soreness</p>
+              {tips.map((tip, i) => (
+                <p key={i}>{tip}</p>
+              ))}
             </div>
 
             <div className="flex gap-3">

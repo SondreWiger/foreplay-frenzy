@@ -10,7 +10,7 @@ import { rollDice } from "@/lib/cards";
 import { cn, formatTime } from "@/lib/utils";
 
 export function FantasyDice() {
-  const { session, players, addToHistory, addScore, nextTurn, setPhase, startTimer } =
+  const { session, players, addToHistory, addScore, nextTurn, setPhase, startTimer, currentVibe } =
     useGameStore();
 
   const [result, setResult] = useState<ReturnType<typeof rollDice> | null>(null);
@@ -62,7 +62,7 @@ export function FantasyDice() {
 
       <Timer />
 
-      {currentPlayer && <ArousalMeter playerId={currentPlayer.id} />}
+      {currentPlayer && <ArousalMeter playerId={currentPlayer.id} vibe={currentVibe} />}
 
       {/* Dice Animation */}
       <div className="flex justify-center py-8">
@@ -133,7 +133,7 @@ export function FantasyDice() {
 
       <div className="pt-4 border-t border-white/10">
         <Button variant="ghost" size="sm" onClick={() => setPhase("aftercare")} className="w-full">
-          🛑 End Session (Aftercare)
+          🛑 End Session
         </Button>
       </div>
     </div>

@@ -88,7 +88,7 @@ export function DrinkingGame() {
         <Button variant="ghost" size="sm" onClick={() => setPhase("paused")}>⏸️ Pause</Button>
       </div>
 
-      {currentPlayer && <ArousalMeter playerId={currentPlayer.id} />}
+      {currentPlayer && <ArousalMeter playerId={currentPlayer.id} vibe={currentVibe} />}
 
       <AnimatePresence mode="wait">
         {activeCard && !showResult && !voting && (

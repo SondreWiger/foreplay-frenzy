@@ -6,7 +6,7 @@ import { ArousalMeter } from "@/components/ui/ArousalMeter";
 import { cn } from "@/lib/utils";
 
 export function Scoreboard() {
-  const { session, players } = useGameStore();
+  const { session, players, currentVibe } = useGameStore();
   if (!session) return null;
 
   const sorted = [...players].sort(
@@ -36,7 +36,7 @@ export function Scoreboard() {
             <span className="text-lg sm:text-xl">{player.avatar}</span>
             <div className="flex-1 min-w-0">
               <p className="text-xs sm:text-sm font-bold text-white truncate">{player.name}</p>
-              <ArousalMeter playerId={player.id} />
+              {currentVibe !== "party" && <ArousalMeter playerId={player.id} vibe={currentVibe} />}
             </div>
             <span className="text-base sm:text-lg font-bold text-neon-pink">
               {session.score[player.id] || 0}

@@ -22,6 +22,7 @@ export function RoleplayRoulette() {
     setPhase,
     consentProfiles,
     startTimer,
+    currentVibe,
   } = useGameStore();
 
   const [playedIds, setPlayedIds] = useState<string[]>([]);
@@ -80,7 +81,7 @@ export function RoleplayRoulette() {
 
       <Timer />
 
-      {currentPlayer && <ArousalMeter playerId={currentPlayer.id} />}
+      {currentPlayer && <ArousalMeter playerId={currentPlayer.id} vibe={currentVibe} />}
 
       <AnimatePresence mode="wait">
         {activeCard && !showResult && (
@@ -127,7 +128,7 @@ export function RoleplayRoulette() {
 
       <div className="pt-4 border-t border-white/10">
         <Button variant="ghost" size="sm" onClick={() => setPhase("aftercare")} className="w-full">
-          🛑 End Session (Aftercare)
+          🛑 End Session
         </Button>
       </div>
     </div>

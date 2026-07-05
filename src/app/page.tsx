@@ -250,7 +250,7 @@ export default function Home() {
               </motion.div>
 
               <div className="text-center pt-1">
-                <p className="text-[10px] text-white/20">v1.2 • Made with 🔥 & sin</p>
+                <p className="text-[10px] text-white/20">v1.3 • Made with 🔥 & sin</p>
               </div>
             </motion.div>
           )}
@@ -259,7 +259,7 @@ export default function Home() {
           {screen === "players" && !session && (
             <motion.div key="players" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }}>
               <Button onClick={() => setScreen("home")} variant="ghost" size="sm" className="mb-4 sm:mb-6 min-h-[44px]">← Back</Button>
-              <PlayerSetup onComplete={() => setScreen("limits")} />
+              <PlayerSetup onComplete={() => currentVibe === "party" ? setScreen("lobby") : setScreen("limits")} />
             </motion.div>
           )}
 
@@ -341,23 +341,29 @@ export default function Home() {
               <div className="bg-blood-900/80 border border-blood-700/30 rounded-xl px-3 py-2 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-white/40">Round {round + 1}</span>
-                  <span className={cn(
-                    "text-[10px] font-bold px-2 py-0.5 rounded-full",
-                    currentLevel === "tease" && "bg-pink-500/20 text-pink-400",
-                    currentLevel === "sensual" && "bg-rose-500/20 text-rose-400",
-                    currentLevel === "dirty" && "bg-red-500/20 text-red-400",
-                    currentLevel === "filthy" && "bg-red-600/20 text-red-500",
-                    currentLevel === "depraved" && "bg-red-900/30 text-red-400",
-                  )}>
-                    {currentLevel.toUpperCase()}
-                  </span>
+                  {currentVibe === "party" ? (
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400">
+                      PARTY
+                    </span>
+                  ) : (
+                    <span className={cn(
+                      "text-[10px] font-bold px-2 py-0.5 rounded-full",
+                      currentLevel === "tease" && "bg-pink-500/20 text-pink-400",
+                      currentLevel === "sensual" && "bg-rose-500/20 text-rose-400",
+                      currentLevel === "dirty" && "bg-red-500/20 text-red-400",
+                      currentLevel === "filthy" && "bg-red-600/20 text-red-500",
+                      currentLevel === "depraved" && "bg-red-900/30 text-red-400",
+                    )}>
+                      {currentLevel.toUpperCase()}
+                    </span>
+                  )}
                 </div>
                 <span className="text-[10px] text-white/30 capitalize">{currentVibe} mode</span>
               </div>
 
-              {/* Escalation Message */}
+              {/* Escalation Message (hidden in party mode) */}
               <AnimatePresence>
-                {escalationMsg && (
+                {escalationMsg && currentVibe !== "party" && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}

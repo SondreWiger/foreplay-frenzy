@@ -20,6 +20,7 @@ export function NeverHaveIEver() {
     nextTurn,
     setPhase,
     consentProfiles,
+    currentVibe,
   } = useGameStore();
 
   const [playedIds, setPlayedIds] = useState<string[]>([]);
@@ -79,7 +80,7 @@ export function NeverHaveIEver() {
         </Button>
       </div>
 
-      {currentPlayer && <ArousalMeter playerId={currentPlayer.id} />}
+      {currentPlayer && <ArousalMeter playerId={currentPlayer.id} vibe={currentVibe} />}
 
       <AnimatePresence mode="wait">
         {activeCard && !showResult && (
@@ -136,7 +137,7 @@ export function NeverHaveIEver() {
 
       <div className="pt-4 border-t border-white/10">
         <Button variant="ghost" size="sm" onClick={() => setPhase("aftercare")} className="w-full">
-          🛑 End Session (Aftercare)
+          🛑 End Session
         </Button>
       </div>
     </div>

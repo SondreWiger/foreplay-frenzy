@@ -95,7 +95,7 @@ export function TruthOrDare() {
       </div>
 
       <Timer />
-      {currentPlayer && <ArousalMeter playerId={currentPlayer.id} />}
+      {currentPlayer && <ArousalMeter playerId={currentPlayer.id} vibe={currentVibe} />}
 
       <AnimatePresence mode="wait">
         {activeCard && !showResult && (
@@ -134,7 +134,7 @@ export function TruthOrDare() {
       )}
 
       <div className="pt-4 border-t border-white/10">
-        <Button variant="ghost" size="sm" onClick={() => setPhase("aftercare")} className="w-full min-h-[44px]">🛑 End Session (Aftercare)</Button>
+        <Button variant="ghost" size="sm" onClick={() => setPhase("aftercare")} className="w-full min-h-[44px]">🛑 End Session</Button>
       </div>
     </div>
   );
