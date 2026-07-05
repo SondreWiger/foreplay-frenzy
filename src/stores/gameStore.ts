@@ -23,6 +23,8 @@ interface GameState {
 
   // Session
   session: GameSession | null;
+  currentVibe: GameVibe;
+  round: number;
 
   // Consent
   consentProfiles: ConsentProfile[];
@@ -47,6 +49,8 @@ interface GameState {
 
   // Actions
   setPlayerMode: (mode: PlayerMode) => void;
+  setVibe: (vibe: GameVibe) => void;
+  nextRound: () => void;
   addPlayer: (player: Player) => void;
   removePlayer: (id: string) => void;
   updatePlayer: (id: string, updates: Partial<Player>) => void;
@@ -99,6 +103,8 @@ export const useGameStore = create<GameState>()(
       players: [defaultPlayer],
       playerMode: "couple",
       session: null,
+      currentVibe: "spicy",
+      round: 0,
       consentProfiles: [],
       safeWordStatus: "green",
       activeCard: null,
@@ -113,6 +119,10 @@ export const useGameStore = create<GameState>()(
 
       setPlayerMode: (mode) => set({ playerMode: mode }),
 
+      setVibe: (vibe) => set({ currentVibe: vibe, round: 0 }),
+
+      nextRound: () => set((s) => ({ round: s.round + 1 })),
+
       addPlayer: (player) =>
         set((s) => ({ players: [...s.players, player] })),
 
@@ -124,8 +134,9 @@ export const useGameStore = create<GameState>()(
           players: s.players.map((p) => (p.id === id ? { ...p, ...updates } : p)),
         })),
 
-      startSession: (mode, vibe = "spicy") => {
-        const { players } = get();
+      startSession: (mode, vibe?: GameVibe) => {
+        const { players, currentVibe } = get();
+        const effectiveVibe = vibe || currentVibe;
         const session: GameSession = {
           id: generateId(),
           mode,
@@ -136,9 +147,9 @@ export const useGameStore = create<GameState>()(
           score: Object.fromEntries(players.map((p) => [p.id, 0])),
           startedAt: new Date().toISOString(),
           history: [],
-          vibe,
+          vibe: effectiveVibe,
         };
-        set({ session, safeWordStatus: "green" });
+        set({ session, safeWordStatus: "green", round: 0, currentVibe: effectiveVibe });
       },
 
       endSession: () => {
