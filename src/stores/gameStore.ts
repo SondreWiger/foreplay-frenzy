@@ -15,6 +15,9 @@ import type {
   SessionRecord,
 } from "@/types";
 import { generateId } from "@/lib/utils";
+import { recordRound, recordSessionComplete, saveSession, checkAchievements } from "@/lib/storage";
+import { showToast } from "@/components/ui/Toast";
+import { getAchievementById } from "@/lib/achievements";
 
 interface GameState {
   // Players
@@ -155,7 +158,6 @@ export const useGameStore = create<GameState>()(
       endSession: () => {
         const { session, players } = get();
         if (session) {
-          // Save to history
           const record: SessionRecord = {
             id: session.id,
             mode: session.mode,
@@ -172,11 +174,27 @@ export const useGameStore = create<GameState>()(
               (new Date().getTime() - new Date(session.startedAt).getTime()) / 60000
             ),
           };
-          const history = JSON.parse(localStorage.getItem("session-history") || "[]");
-          history.unshift(record);
-          // Keep last 50 sessions
-          if (history.length > 50) history.splice(50);
-          localStorage.setItem("session-history", JSON.stringify(history));
+          saveSession(record);
+          recordSessionComplete(record);
+
+          // Check final achievements
+          const newBadges = checkAchievements({
+            level: session.level,
+            mode: session.mode,
+            playerCount: session.players.length,
+            duration: record.duration,
+          });
+          newBadges.forEach((badgeId) => {
+            const ach = getAchievementById(badgeId);
+            if (ach) {
+              showToast({
+                emoji: ach.emoji,
+                title: "Achievement Unlocked!",
+                message: ach.name + " — " + ach.description,
+                type: "achievement",
+              });
+            }
+          });
         }
         set((s) => ({
           session: s.session
@@ -215,6 +233,39 @@ export const useGameStore = create<GameState>()(
             id: generateId(),
             timestamp: new Date().toISOString(),
           };
+
+          // Track stats and check achievements
+          recordRound({
+            cardType: action.result === "completed" ? (s.activeCard?.type || "challenge") : "skipped",
+            points: action.points || 0,
+            skipped: action.result === "skipped",
+            level: s.session.level,
+            mode: s.session.mode,
+            playerCount: s.session.players.length,
+          });
+
+          // Check achievements
+          const newBadges = checkAchievements({
+            cardType: s.activeCard?.type,
+            level: s.session.level,
+            mode: s.session.mode,
+            playerCount: s.session.players.length,
+            points: action.points,
+          });
+
+          // Show toast for each new badge
+          newBadges.forEach((badgeId) => {
+            const ach = getAchievementById(badgeId);
+            if (ach) {
+              showToast({
+                emoji: ach.emoji,
+                title: "Achievement Unlocked!",
+                message: ach.name + " — " + ach.description,
+                type: "achievement",
+              });
+            }
+          });
+
           return {
             session: {
               ...s.session,

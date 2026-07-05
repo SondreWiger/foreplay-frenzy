@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
 import type { GameCard, CardPack } from "@/types";
+import { saveCustomPack } from "@/lib/storage";
+import { showToast } from "@/components/ui/Toast";
 
 export function CustomCardCreator({ onClose }: { onClose: () => void }) {
   const { addPlayer } = useGameStore();
@@ -59,10 +61,13 @@ export function CustomCardCreator({ onClose }: { onClose: () => void }) {
       tags: ["custom"],
     };
 
-    // Save to localStorage
-    const existing = JSON.parse(localStorage.getItem("custom-packs") || "[]");
-    existing.push(pack);
-    localStorage.setItem("custom-packs", JSON.stringify(existing));
+    saveCustomPack(pack);
+    showToast({
+      emoji: "🎨",
+      title: "Pack Created!",
+      message: `"${pack.name}" saved with ${cards.length} cards`,
+      type: "info",
+    });
     onClose();
   };
 

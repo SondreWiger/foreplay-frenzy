@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
-import { cn } from "@/lib/utils";
+import { getSessionHistory, clearSessionHistory } from "@/lib/storage";
 import type { SessionRecord } from "@/types";
 
 export function SessionHistory() {
@@ -11,12 +11,11 @@ export function SessionHistory() {
   const [showClear, setShowClear] = useState(false);
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("session-history") || "[]");
-    setHistory(stored);
+    setHistory(getSessionHistory());
   }, []);
 
   const clearHistory = () => {
-    localStorage.removeItem("session-history");
+    clearSessionHistory();
     setHistory([]);
     setShowClear(false);
   };
@@ -28,7 +27,7 @@ export function SessionHistory() {
 
   const formatDate = (iso: string) => {
     const d = new Date(iso);
-    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
   };
 
   const modeEmoji: Record<string, string> = {
@@ -45,6 +44,18 @@ export function SessionHistory() {
     "rate-me": "⭐",
     "hot-take": "🔥",
     "free-play": "🔥",
+    "emoji-guess": "猜测",
+    "roleplay-roulette": "🎭",
+    "edging-control": "⏱️",
+    "blindfold-sensory": "🙈",
+    "strip-power": "💃",
+  };
+
+  const vibeEmoji: Record<string, string> = {
+    party: "🎉",
+    chill: "😌",
+    spicy: "🌶️",
+    dark: "🖤",
   };
 
   if (history.length === 0) {
@@ -57,6 +68,9 @@ export function SessionHistory() {
     );
   }
 
+  const totalRounds = history.reduce((sum, h) => sum + h.totalRounds, 0);
+  const totalMinutes = history.reduce((sum, h) => sum + h.duration, 0);
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -66,12 +80,26 @@ export function SessionHistory() {
         </Button>
       </div>
 
+      {/* Summary */}
+      <div className="grid grid-cols-3 gap-2">
+        <div className="bg-blood-900/50 border border-blood-800/30 rounded-xl p-2.5 text-center">
+          <p className="text-lg font-bold text-white">{history.length}</p>
+          <p className="text-[9px] text-white/40">Sessions</p>
+        </div>
+        <div className="bg-blood-900/50 border border-blood-800/30 rounded-xl p-2.5 text-center">
+          <p className="text-lg font-bold text-white">{totalRounds}</p>
+          <p className="text-[9px] text-white/40">Total Rounds</p>
+        </div>
+        <div className="bg-blood-900/50 border border-blood-800/30 rounded-xl p-2.5 text-center">
+          <p className="text-lg font-bold text-white">{formatDuration(totalMinutes)}</p>
+          <p className="text-[9px] text-white/40">Play Time</p>
+        </div>
+      </div>
+
       {showClear && (
         <div className="bg-red-900/30 border border-red-500/30 rounded-xl p-3 text-center">
           <p className="text-xs text-white/60 mb-2">Clear all session history?</p>
-          <Button onClick={clearHistory} variant="danger" size="sm">
-            Yes, Clear All
-          </Button>
+          <Button onClick={clearHistory} variant="danger" size="sm">Yes, Clear All</Button>
         </div>
       )}
 
@@ -79,29 +107,28 @@ export function SessionHistory() {
         {history.map((record, i) => (
           <motion.div
             key={record.id}
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-            className="bg-blood-900/50 border border-blood-800/30 rounded-xl p-3 sm:p-4"
+            transition={{ delay: i * 0.03 }}
+            className="bg-blood-900/50 border border-blood-800/30 rounded-xl p-3"
           >
             <div className="flex items-center gap-3">
-              <span className="text-2xl">{modeEmoji[record.mode] || "🎮"}</span>
+              <span className="text-xl sm:text-2xl">{modeEmoji[record.mode] || "🎮"}</span>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <p className="text-sm font-bold text-white capitalize">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <p className="text-xs sm:text-sm font-bold text-white capitalize">
                     {record.mode.replace(/-/g, " ")}
                   </p>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-blood-800/50 text-white/40">
-                    {record.vibe}
-                  </span>
+                  <span className="text-[9px]">{vibeEmoji[record.vibe] || ""}</span>
                 </div>
                 <p className="text-[10px] text-white/40">
                   {formatDate(record.startedAt)} • {formatDuration(record.duration)} • {record.totalRounds} rounds
                 </p>
+                <p className="text-[10px] text-white/30">{record.playerNames.join(", ")}</p>
               </div>
-              <div className="text-right">
-                <p className="text-xs font-bold text-neon-pink">{record.topScore}</p>
-                <p className="text-[10px] text-white/40">{record.topScorer}</p>
+              <div className="text-right flex-shrink-0">
+                <p className="text-xs sm:text-sm font-bold text-neon-pink">{record.topScore}</p>
+                <p className="text-[9px] text-white/40">{record.topScorer}</p>
               </div>
             </div>
           </motion.div>

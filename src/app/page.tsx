@@ -21,6 +21,7 @@ import { GenericPartyGame } from "@/components/games/GenericPartyGame";
 import { CustomCardCreator } from "@/components/games/CustomCardCreator";
 import { SessionHistory } from "@/components/games/SessionHistory";
 import { AchievementSystem } from "@/components/games/AchievementSystem";
+import { ToastContainer } from "@/components/ui/Toast";
 import { getProgressionLevel, getEscalationMessage } from "@/lib/card-engine";
 import { cn } from "@/lib/utils";
 import type { GameVibe } from "@/types";
@@ -78,6 +79,7 @@ export default function Home() {
 
       {session && session.phase === "playing" && <SafeWordButton />}
       <AftercareModal />
+      <ToastContainer />
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 sm:py-8 safe-bottom">
         <AnimatePresence mode="wait">
@@ -326,7 +328,7 @@ export default function Home() {
                 <div className="bg-blood-900/50 border border-blood-800/30 rounded-xl p-4">
                   <p className="text-sm font-bold text-white mb-2">Data</p>
                   <p className="text-xs text-white/40 mb-3">All data is stored locally on your device.</p>
-                  <Button onClick={() => { if (confirm("Clear all data?")) { localStorage.clear(); window.location.reload(); } }} variant="danger" size="sm">🗑️ Clear All Data</Button>
+                  <Button onClick={() => { if (confirm("Clear all data? This cannot be undone.")) { localStorage.clear(); window.location.reload(); } }} variant="danger" size="sm">🗑️ Clear All Data</Button>
                 </div>
               </div>
             </motion.div>
