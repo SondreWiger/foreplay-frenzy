@@ -380,13 +380,15 @@ export default function Home() {
                   ) : (
                     <span className={cn(
                       "text-[10px] font-bold px-2 py-0.5 rounded-full",
-                      currentLevel === "tease" && "bg-pink-500/20 text-pink-400",
-                      currentLevel === "sensual" && "bg-rose-500/20 text-rose-400",
-                      currentLevel === "dirty" && "bg-red-500/20 text-red-400",
+                      currentLevel === "tease" && (currentVibe === "chill" ? "bg-teal-500/20 text-teal-400" : "bg-pink-500/20 text-pink-400"),
+                      currentLevel === "sensual" && (currentVibe === "chill" ? "bg-cyan-500/20 text-cyan-400" : "bg-rose-500/20 text-rose-400"),
+                      currentLevel === "dirty" && (currentVibe === "chill" ? "bg-pink-500/20 text-pink-400" : "bg-red-500/20 text-red-400"),
                       currentLevel === "filthy" && "bg-red-600/20 text-red-500",
                       currentLevel === "depraved" && "bg-red-900/30 text-red-400",
                     )}>
-                      {currentLevel.toUpperCase()}
+                      {currentVibe === "chill"
+                        ? (currentLevel === "tease" ? "FLIRTY" : currentLevel === "sensual" ? "TOUCHY" : "NAUGHTY")
+                        : currentLevel.toUpperCase()}
                     </span>
                   )}
                 </div>

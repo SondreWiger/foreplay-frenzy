@@ -13,17 +13,17 @@ import { getRandomItem } from "@/lib/utils";
 /**
  * Returns the max allowed level based on vibe.
  * - party: tease only (SFW)
- * - chill: tease + sensual
- * - spicy: tease → filthy
- * - dark: everything (tease → depraved)
+ * - chill: tease → dirty (flirty to naughty)
+ * - spicy: tease → depraved (the full journey)
+ * - dark: everything (tease → depraved, more extreme cards)
  */
 function getMaxLevelForVibe(vibe: GameVibe): number {
   const levels: GameLevel[] = ["tease", "sensual", "dirty", "filthy", "depraved"];
   switch (vibe) {
     case "party": return 0; // tease only
-    case "chill": return 1; // tease + sensual
-    case "spicy": return 3; // tease → filthy
-    case "dark": return 4;  // everything
+    case "chill": return 2; // tease → dirty
+    case "spicy": return 4; // tease → depraved (full range)
+    case "dark": return 4;  // everything + extreme cards
     default: return 4;
   }
 }
@@ -69,17 +69,23 @@ export function getProgressionLabel(round: number, vibe: GameVibe): string {
 }
 
 /**
- * Get escalation message.
+ * Get escalation message — varies by vibe for context.
  */
 export function getEscalationMessage(round: number, vibe: GameVibe, escalateEvery: number = 3): string | null {
   if (round > 0 && round % escalateEvery === 0) {
     const level = getProgressionLevel(round, vibe);
     const messages: Record<GameLevel, string> = {
-      tease: "Time to warm up...",
-      sensual: "Getting warmer... things are heating up.",
-      dirty: "Things just got dirty.",
-      filthy: "No turning back now.",
-      depraved: "Welcome to the abyss. No limits.",
+      tease: vibe === "chill"
+        ? "Getting warmed up..."
+        : "Time to warm up...",
+      sensual: vibe === "chill"
+        ? "Things are getting flirty..."
+        : "Getting warmer... don't hold back.",
+      dirty: vibe === "chill"
+        ? "Now we're getting naughty 😏"
+        : "Things just got dirty.",
+      filthy: "No turning back now. Let go.",
+      depraved: "No limits. You asked for this.",
     };
     return messages[level];
   }
