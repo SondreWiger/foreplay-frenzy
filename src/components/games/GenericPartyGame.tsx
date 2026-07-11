@@ -9,7 +9,7 @@ import { getFilteredRandomCard } from "@/lib/card-engine";
 import { cn } from "@/lib/utils";
 import type { GameCard, GameMode } from "@/types";
 
-type GameType = "most-likely" | "would-you-rather" | "two-truths" | "this-or-that" | "charades" | "story" | "rate" | "hot-take" | "emoji";
+type GameType = "most-likely" | "would-you-rather" | "two-truths" | "this-or-that" | "charades" | "story" | "rate" | "hot-take" | "emoji" | "compliment" | "roulette" | "questions" | "scream";
 
 interface GenericPartyGameProps {
   gameType: GameType;
@@ -25,6 +25,10 @@ const modeMap: Record<GameType, GameMode> = {
   "rate": "rate-me",
   "hot-take": "hot-take",
   "emoji": "emoji-guess",
+  "compliment": "compliment-battle",
+  "roulette": "kink-roulette",
+  "questions": "twenty-questions",
+  "scream": "scream-or-drink",
 };
 
 const titleMap: Record<GameType, string> = {
@@ -37,6 +41,10 @@ const titleMap: Record<GameType, string> = {
   "rate": "Rate Me",
   "hot-take": "Hot Takes",
   "emoji": "Emoji Guess",
+  "compliment": "Compliment Battle",
+  "roulette": "Kink Roulette",
+  "questions": "20 Questions",
+  "scream": "Scream or Drink",
 };
 
 const emojiMap: Record<GameType, string> = {
@@ -49,6 +57,10 @@ const emojiMap: Record<GameType, string> = {
   "rate": "⭐",
   "hot-take": "🔥",
   "emoji": "🔍",
+  "compliment": "💝",
+  "roulette": "🎰",
+  "questions": "❓",
+  "scream": "😱",
 };
 
 export function GenericPartyGame({ gameType }: GenericPartyGameProps) {

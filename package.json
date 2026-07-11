@@ -1,7 +1,7 @@
 {
   "name": "foreplay-frenzy",
-  "version": "2.0.0",
-  "description": "The ultimate party and couples game suite. 300+ cards, 15 game modes, 4 vibe settings.",
+  "version": "2.1.0",
+  "description": "The ultimate party and couples game suite. 350+ cards, 20 game modes, 4 vibe settings.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

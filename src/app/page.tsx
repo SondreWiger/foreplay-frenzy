@@ -75,6 +75,11 @@ export default function Home() {
       case "rate-me": return <GenericPartyGame gameType="rate" />;
       case "hot-take": return <GenericPartyGame gameType="hot-take" />;
       case "emoji-guess": return <GenericPartyGame gameType="emoji" />;
+      case "compliment-battle": return <GenericPartyGame gameType="compliment" />;
+      case "kink-roulette": return <GenericPartyGame gameType="roulette" />;
+      case "twenty-questions": return <GenericPartyGame gameType="questions" />;
+      case "body-language": return <GenericPartyGame gameType="charades" />;
+      case "scream-or-drink": return <GenericPartyGame gameType="scream" />;
       default: return <TruthOrDare />;
     }
   };
@@ -269,7 +274,7 @@ export default function Home() {
               </motion.div>
 
               <div className="text-center pt-1">
-                <p className="text-[10px] text-white/20">v2.0 • Made with 🔥 & sin</p>
+                <p className="text-[10px] text-white/20">v2.1 • Made with 🔥 & sin</p>
               </div>
             </motion.div>
           )}
@@ -278,7 +283,7 @@ export default function Home() {
           {screen === "players" && !session && (
             <motion.div key="players" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }}>
               <Button onClick={() => setScreen("home")} variant="ghost" size="sm" className="mb-4 sm:mb-6 min-h-[44px]">← Back</Button>
-              <PlayerSetup onComplete={() => currentVibe === "party" ? setScreen("lobby") : setScreen("limits")} />
+              <PlayerSetup onComplete={() => currentVibe === "party" ? setScreen("lobby") : setScreen("limits")} onSkipLimits={() => setScreen("lobby")} />
             </motion.div>
           )}
 

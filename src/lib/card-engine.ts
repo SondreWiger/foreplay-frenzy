@@ -3,6 +3,7 @@ import { getAllCards } from "@/lib/cards";
 import { getSFWCards } from "@/lib/sfw-cards";
 import { getPartyCards } from "@/lib/party-cards";
 import { getExtremeCards } from "@/lib/extreme-cards";
+import { getNewGamePacks } from "@/lib/new-cards";
 import { getCustomPacks } from "@/lib/storage";
 import { getRandomItem } from "@/lib/utils";
 
@@ -132,6 +133,16 @@ export function getCardsForVibe(
     }
   }
 
+  // Include new game packs for all vibes (filtered by level)
+  const newPacks = getNewGamePacks();
+  for (const pack of newPacks) {
+    const filteredPackCards = pack.cards.filter((c: GameCard) => {
+      if (vibe === "party") return c.level === "tease";
+      return getLevelIndex(c.level) <= maxLevelIdx;
+    });
+    cards = [...cards, ...filteredPackCards];
+  }
+
   // Include custom packs for all vibes (filtered by vibe level)
   const customPacks = getCustomPacks();
   for (const pack of customPacks) {
@@ -175,6 +186,11 @@ export function getCardsForMode(
     "rate-me": ["rate"],
     "hot-take": ["challenge"],
     "emoji-guess": ["challenge"],
+    "compliment-battle": ["challenge"],
+    "kink-roulette": ["challenge"],
+    "twenty-questions": ["challenge"],
+    "body-language": ["charades"],
+    "scream-or-drink": ["challenge"],
   };
 
   const allowedTypes = modeTypeMap[mode] || ["truth", "dare", "wild"];

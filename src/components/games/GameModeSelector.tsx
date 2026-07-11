@@ -31,6 +31,13 @@ const gameModes: {
   { id: "hot-take", name: "Hot Takes", emoji: "🔥", description: "Defend your take.", color: "from-red-600/20 to-orange-500/20 border-red-600/30", vibe: "party", category: "party" },
   { id: "this-or-that", name: "This or That", emoji: "⚖️", description: "Pick a side.", color: "from-violet-500/20 to-red-500/20 border-violet-500/30", vibe: "spicy", category: "spicy" },
   { id: "emoji-guess", name: "Emoji Guess", emoji: "🔍", description: "Decode dirty emojis.", color: "from-lime-500/20 to-red-500/20 border-lime-500/30", vibe: "party", category: "party" },
+
+  // NEW MODES
+  { id: "compliment-battle", name: "Compliment Battle", emoji: "💝", description: "Who gives the best compliment?", color: "from-pink-500/20 to-rose-500/20 border-pink-500/30", vibe: "chill", category: "party" },
+  { id: "kink-roulette", name: "Kink Roulette", emoji: "🎰", description: "Random kink activity selector.", color: "from-red-500/20 to-purple-500/20 border-red-500/30", vibe: "spicy", category: "spicy" },
+  { id: "twenty-questions", name: "20 Questions", emoji: "❓", description: "Adult guessing game.", color: "from-blue-500/20 to-cyan-500/20 border-blue-500/30", vibe: "chill", category: "party" },
+  { id: "body-language", name: "Body Language", emoji: "🫦", description: "Act it out — NSFW charades.", color: "from-fuchsia-500/20 to-pink-500/20 border-fuchsia-500/30", vibe: "spicy", category: "spicy" },
+  { id: "scream-or-drink", name: "Scream or Drink", emoji: "😱", description: "Try not to laugh or drink.", color: "from-amber-500/20 to-orange-500/20 border-amber-500/30", vibe: "party", category: "party" },
 ];
 
 const categories = [

@@ -20,7 +20,7 @@ const modes: { id: PlayerMode; name: string; emoji: string; description: string 
   { id: "group", name: "Group", emoji: "👯", description: "3-8 players" },
 ];
 
-export function PlayerSetup({ onComplete }: { onComplete: () => void }) {
+export function PlayerSetup({ onComplete, onSkipLimits }: { onComplete: () => void; onSkipLimits: () => void }) {
   const { players, addPlayer, removePlayer, updatePlayer, playerMode, setPlayerMode } =
     useGameStore();
 
@@ -141,9 +141,14 @@ export function PlayerSetup({ onComplete }: { onComplete: () => void }) {
         )}
       </div>
 
-      <Button onClick={onComplete} variant="primary" size="lg" className="w-full min-h-[52px]">
-        Next: Set Limits →
-      </Button>
+      <div className="space-y-2">
+        <Button onClick={onComplete} variant="primary" size="lg" className="w-full min-h-[52px]">
+          Next: Set Limits →
+        </Button>
+        <Button onClick={onSkipLimits} variant="ghost" size="md" className="w-full min-h-[44px]">
+          Skip Limits — Start Playing →
+        </Button>
+      </div>
     </div>
   );
 }

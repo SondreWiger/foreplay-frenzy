@@ -125,7 +125,13 @@ export type GameMode =
   | "rate-me"
   | "king-of-the-table"
   | "hot-take"
-  | "emoji-guess";
+  | "emoji-guess"
+  // New modes
+  | "compliment-battle"
+  | "kink-roulette"
+  | "twenty-questions"
+  | "body-language"
+  | "scream-or-drink";
 
 export interface GameSession {
   id: string;
