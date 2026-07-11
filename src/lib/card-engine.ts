@@ -3,6 +3,7 @@ import { getAllCards } from "@/lib/cards";
 import { getSFWCards } from "@/lib/sfw-cards";
 import { getPartyCards } from "@/lib/party-cards";
 import { getExtremeCards } from "@/lib/extreme-cards";
+import { getCustomPacks } from "@/lib/storage";
 import { getRandomItem } from "@/lib/utils";
 
 // ============================================================
@@ -100,30 +101,41 @@ export function getCardsForVibe(
   const currentLevel = getProgressionLevel(round, vibe);
   const maxLevelIdx = getLevelIndex(currentLevel);
 
-  // Party mode uses SFW cards only
-  if (vibe === "party") {
-    return getSFWCards().filter((c) => getLevelIndex(c.level) <= maxLevelIdx);
-  }
-
-  // For other vibes, combine appropriate packs
   let cards: GameCard[] = [];
 
-  // Always include base cards
-  cards = [...cards, ...getAllCards()];
+  // Party mode uses SFW cards only
+  if (vibe === "party") {
+    cards = [...getSFWCards()];
+  } else {
+    // Always include base cards for non-party vibes
+    cards = [...getAllCards()];
 
-  // Chill/spicy include party cards too
-  if (vibe === "chill" || vibe === "spicy") {
-    cards = [...cards, ...getPartyCards()];
+    // Chill/spicy include party cards too
+    if (vibe === "chill" || vibe === "spicy") {
+      cards = [...cards, ...getPartyCards()];
+    }
+
+    // Spicy includes extreme up to filthy
+    if (vibe === "spicy") {
+      cards = [...cards, ...getExtremeCards()];
+    }
+
+    // Dark includes everything
+    if (vibe === "dark") {
+      cards = [...cards, ...getPartyCards(), ...getExtremeCards()];
+    }
   }
 
-  // Spicy includes extreme up to filthy
-  if (vibe === "spicy") {
-    cards = [...cards, ...getExtremeCards()];
-  }
-
-  // Dark includes everything
-  if (vibe === "dark") {
-    cards = [...cards, ...getPartyCards(), ...getExtremeCards()];
+  // Include custom packs for all vibes (filtered by vibe level)
+  const customPacks = getCustomPacks();
+  for (const pack of customPacks) {
+    if (pack.cards && Array.isArray(pack.cards)) {
+      const filteredPackCards = pack.cards.filter((c: GameCard) => {
+        if (vibe === "party") return c.level === "tease";
+        return getLevelIndex(c.level) <= maxLevelIdx;
+      });
+      cards = [...cards, ...filteredPackCards];
+    }
   }
 
   // Filter by level

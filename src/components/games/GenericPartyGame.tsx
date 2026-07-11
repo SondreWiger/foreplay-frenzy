@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameStore } from "@/stores/gameStore";
 import { Button } from "@/components/ui/Button";
@@ -48,7 +48,7 @@ const emojiMap: Record<GameType, string> = {
   "story": "📖",
   "rate": "⭐",
   "hot-take": "🔥",
-  "emoji": "猜测",
+  "emoji": "🔍",
 };
 
 export function GenericPartyGame({ gameType }: GenericPartyGameProps) {
@@ -58,6 +58,14 @@ export function GenericPartyGame({ gameType }: GenericPartyGameProps) {
   const [showResult, setShowResult] = useState(false);
   const [timerActive, setTimerActive] = useState(false);
   const [timer, setTimer] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Cleanup interval on unmount
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
 
   const currentPlayer = players.find((p) => p.id === session?.currentTurn);
   const gameMode = modeMap[gameType];
@@ -77,9 +85,13 @@ export function GenericPartyGame({ gameType }: GenericPartyGameProps) {
     if (gameType === "charades" && activeCard.duration) {
       setTimerActive(true);
       setTimer(activeCard.duration);
-      const interval = setInterval(() => {
+      intervalRef.current = setInterval(() => {
         setTimer((prev) => {
-          if (prev <= 1) { clearInterval(interval); setTimerActive(false); return 0; }
+          if (prev <= 1) {
+            if (intervalRef.current) clearInterval(intervalRef.current);
+            setTimerActive(false);
+            return 0;
+          }
           return prev - 1;
         });
       }, 1000);

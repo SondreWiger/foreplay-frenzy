@@ -97,7 +97,7 @@ const neverHaveIEverCards: GameCard[] = [
 
 const diceActions = [
   "Spank", "Ride", "Suck", "Finger", "Bite", "Scratch", "Choke",
-  "Slap", "Pinch", "Lick", "Deepthroat", "Peg", "Fist", "Gag",
+  "Slap", "Pinch", "Lick", "Deepthroat", "Fist", "Gag",
   "Tie up", "Blindfold", "Edge", "Milk", "Piss on", "Cum on",
   "Puke on", "Shit on", "Peg", "Canes", "Whip", "Electro",
 ];
@@ -112,7 +112,7 @@ const diceToys = [
   "None", "Vibrator", "Dildo", "Butt plug", "Chastity cage",
   "Nipple clamps", "Ball gag", "Paddle", "Crops", "Flogger",
   "Wartenberg wheel", "Ice cube", "Hot wax", "Clothespins",
-  "Rope", "Handcuffs", "Blindfold", " fucking machine",
+  "Rope", "Handcuffs", "Blindfold", "Fucking machine",
 ];
 
 const diceHoles = [

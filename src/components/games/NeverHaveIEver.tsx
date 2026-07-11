@@ -6,8 +6,7 @@ import { useGameStore } from "@/stores/gameStore";
 import { GameCard } from "@/components/ui/GameCard";
 import { Button } from "@/components/ui/Button";
 import { ArousalMeter } from "@/components/ui/ArousalMeter";
-import { defaultPacks, getCardsByLevel, filterByLimits, getRandomCard } from "@/lib/cards";
-import { getHardNoIds } from "@/lib/limits";
+import { getFilteredRandomCard } from "@/lib/card-engine";
 
 export function NeverHaveIEver() {
   const {
@@ -19,8 +18,8 @@ export function NeverHaveIEver() {
     addScore,
     nextTurn,
     setPhase,
-    consentProfiles,
     currentVibe,
+    round,
   } = useGameStore();
 
   const [playedIds, setPlayedIds] = useState<string[]>([]);
@@ -29,19 +28,14 @@ export function NeverHaveIEver() {
 
   const currentPlayer = players.find((p) => p.id === session?.currentTurn);
 
-  const allCards = defaultPacks.find((p) => p.id === "never-have-i-ever")?.cards || [];
-  const hardNos = consentProfiles.flatMap((cp) => getHardNoIds(cp.limits));
-  const filteredCards = filterByLimits(allCards, hardNos);
-
   const drawCard = useCallback(() => {
-    const level = session?.level || "tease";
-    const card = getRandomCard(filteredCards, level, playedIds);
+    const card = getFilteredRandomCard("never-have-i-ever", currentVibe, round, 3, playedIds);
     if (card) {
       setActiveCard(card);
       setPlayedIds((prev) => [...prev, card.id]);
       setHasDone(null);
     }
-  }, [filteredCards, session?.level, playedIds, setActiveCard]);
+  }, [currentVibe, round, playedIds, setActiveCard]);
 
   const handleAnswer = (done: boolean) => {
     if (!activeCard || !currentPlayer) return;

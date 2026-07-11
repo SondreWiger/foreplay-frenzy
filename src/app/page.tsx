@@ -21,12 +21,14 @@ import { GenericPartyGame } from "@/components/games/GenericPartyGame";
 import { CustomCardCreator } from "@/components/games/CustomCardCreator";
 import { SessionHistory } from "@/components/games/SessionHistory";
 import { AchievementSystem } from "@/components/games/AchievementSystem";
+import { PackStore } from "@/components/store/PackStore";
 import { ToastContainer } from "@/components/ui/Toast";
+import { AgeGate } from "@/components/ui/AgeGate";
 import { getProgressionLevel, getEscalationMessage } from "@/lib/card-engine";
 import { cn } from "@/lib/utils";
 import type { GameVibe } from "@/types";
 
-type Screen = "home" | "players" | "limits" | "lobby" | "playing" | "history" | "achievements" | "custom-cards" | "settings";
+type Screen = "home" | "players" | "limits" | "lobby" | "playing" | "history" | "achievements" | "custom-cards" | "store" | "settings";
 
 const vibes: { id: GameVibe; name: string; emoji: string; description: string; color: string; bgColor: string }[] = [
   { id: "party", name: "Party", emoji: "🎉", description: "Fun for friend groups. SFW. No NSFW content.", color: "text-amber-400", bgColor: "from-amber-500/20 to-orange-500/20 border-amber-500/30" },
@@ -47,6 +49,13 @@ export default function Home() {
   // Check if vibe was previously set
   useEffect(() => {
     if (currentVibe !== "spicy") setHasChosenVibe(true);
+  }, []);
+
+  // Register service worker
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch(() => {});
+    }
   }, []);
 
   const renderGame = () => {
@@ -84,6 +93,7 @@ export default function Home() {
       {session && session.phase === "playing" && <SafeWordButton />}
       <AftercareModal />
       <ToastContainer />
+      <AgeGate />
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 sm:py-8 safe-bottom">
         <AnimatePresence mode="wait">
@@ -240,12 +250,15 @@ export default function Home() {
                 ))}
               </motion.div>
 
-              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }} className="grid grid-cols-4 gap-2">
+              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }} className="grid grid-cols-5 gap-2">
                 <Button onClick={() => setScreen("history")} variant="ghost" size="sm" className="flex-col gap-1 min-h-[56px]">
                   <span className="text-lg">📜</span><span className="text-[9px]">History</span>
                 </Button>
                 <Button onClick={() => setScreen("achievements")} variant="ghost" size="sm" className="flex-col gap-1 min-h-[56px]">
                   <span className="text-lg">🏆</span><span className="text-[9px]">Badges</span>
+                </Button>
+                <Button onClick={() => setScreen("store")} variant="ghost" size="sm" className="flex-col gap-1 min-h-[56px]">
+                  <span className="text-lg">🛒</span><span className="text-[9px]">Packs</span>
                 </Button>
                 <Button onClick={() => setScreen("custom-cards")} variant="ghost" size="sm" className="flex-col gap-1 min-h-[56px]">
                   <span className="text-lg">🎨</span><span className="text-[9px]">Custom</span>
@@ -256,7 +269,7 @@ export default function Home() {
               </motion.div>
 
               <div className="text-center pt-1">
-                <p className="text-[10px] text-white/20">v1.3 • Made with 🔥 & sin</p>
+                <p className="text-[10px] text-white/20">v2.0 • Made with 🔥 & sin</p>
               </div>
             </motion.div>
           )}
@@ -308,6 +321,13 @@ export default function Home() {
             </motion.div>
           )}
 
+          {/* ==================== PACK STORE ==================== */}
+          {screen === "store" && !session && (
+            <motion.div key="store" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }}>
+              <PackStore onClose={() => setScreen("home")} />
+            </motion.div>
+          )}
+
           {/* ==================== SETTINGS ==================== */}
           {screen === "settings" && !session && (
             <motion.div key="settings" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} className="space-y-6">
@@ -336,6 +356,11 @@ export default function Home() {
                   <p className="text-sm font-bold text-white mb-2">Data</p>
                   <p className="text-xs text-white/40 mb-3">All data is stored locally on your device.</p>
                   <Button onClick={() => { if (confirm("Clear all data? This cannot be undone.")) { localStorage.clear(); window.location.reload(); } }} variant="danger" size="sm">🗑️ Clear All Data</Button>
+                </div>
+                <div className="border rounded-xl p-4 space-y-2" style={{ backgroundColor: "var(--vibe-card)", borderColor: "var(--vibe-card-border)" }}>
+                  <p className="text-sm font-bold text-white mb-2">Legal</p>
+                  <a href="/terms" className="block text-xs text-white/40 hover:text-white/60 transition-colors min-h-[36px] flex items-center">📄 Terms of Service</a>
+                  <a href="/privacy" className="block text-xs text-white/40 hover:text-white/60 transition-colors min-h-[36px] flex items-center">🔒 Privacy Policy</a>
                 </div>
               </div>
             </motion.div>

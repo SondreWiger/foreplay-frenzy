@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameStore } from "@/stores/gameStore";
 import { Button } from "@/components/ui/Button";
@@ -50,6 +51,7 @@ export function AftercareModal() {
   const isParty = currentVibe === "party";
   const affirmations = isParty ? partyAffirmations : nsfwAffirmations;
   const tips = isParty ? partyTips : nsfwTips;
+  const affirmation = useMemo(() => affirmations[Math.floor(Math.random() * affirmations.length)], [isParty]);
 
   const handleEnd = () => {
     endSession();
@@ -83,7 +85,7 @@ export function AftercareModal() {
 
             <div className="bg-blood-800/50 rounded-xl p-3 sm:p-4">
               <p className="text-sm sm:text-base text-white/80 italic">
-                &ldquo;{affirmations[Math.floor(Math.random() * affirmations.length)]}&rdquo;
+                &ldquo;{affirmation}&rdquo;
               </p>
             </div>
 

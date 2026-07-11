@@ -113,12 +113,8 @@ export type GameMode =
   | "truth-or-dare"
   | "never-have-i-ever"
   | "fantasy-dice"
-  | "blindfold-sensory"
-  | "strip-power"
   | "roleplay-roulette"
-  | "edging-control"
   | "kink-charades"
-  | "free-play"
   // Party / Friend group
   | "drinking-game"
   | "who-most-likely"

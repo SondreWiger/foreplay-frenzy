@@ -19,7 +19,6 @@ const gameModes: {
   { id: "never-have-i-ever", name: "Never Have I Ever", emoji: "🤫", description: "Confess your sins.", color: "from-rose-500/20 to-red-500/20 border-rose-500/30", vibe: "spicy", category: "core" },
   { id: "fantasy-dice", name: "Fantasy Dice", emoji: "🎲", description: "Roll for your fate.", color: "from-purple-500/20 to-red-500/20 border-purple-500/30", vibe: "spicy", category: "core" },
   { id: "roleplay-roulette", name: "Roleplay Roulette", emoji: "🎭", description: "500+ dirty scenarios.", color: "from-amber-500/20 to-red-500/20 border-amber-500/30", vibe: "spicy", category: "core" },
-  { id: "free-play", name: "Free Play", emoji: "🔥", description: "No rules. Just play.", color: "from-red-500/20 to-red-900/20 border-red-500/30", vibe: "spicy", category: "core" },
 
   // PARTY
   { id: "drinking-game", name: "Drinking Game", emoji: "🍺", description: "Sip, shot, chug.", color: "from-amber-500/20 to-yellow-500/20 border-amber-500/30", vibe: "party", category: "party" },
@@ -31,7 +30,7 @@ const gameModes: {
   { id: "rate-me", name: "Rate Me", emoji: "⭐", description: "How do they see you?", color: "from-yellow-500/20 to-red-500/20 border-yellow-500/30", vibe: "spicy", category: "party" },
   { id: "hot-take", name: "Hot Takes", emoji: "🔥", description: "Defend your take.", color: "from-red-600/20 to-orange-500/20 border-red-600/30", vibe: "party", category: "party" },
   { id: "this-or-that", name: "This or That", emoji: "⚖️", description: "Pick a side.", color: "from-violet-500/20 to-red-500/20 border-violet-500/30", vibe: "spicy", category: "spicy" },
-  { id: "emoji-guess", name: "Emoji Guess", emoji: "猜测", description: "Decode dirty emojis.", color: "from-lime-500/20 to-red-500/20 border-lime-500/30", vibe: "party", category: "party" },
+  { id: "emoji-guess", name: "Emoji Guess", emoji: "🔍", description: "Decode dirty emojis.", color: "from-lime-500/20 to-red-500/20 border-lime-500/30", vibe: "party", category: "party" },
 ];
 
 const categories = [

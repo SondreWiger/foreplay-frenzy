@@ -6,6 +6,7 @@ import { useGameStore } from "@/stores/gameStore";
 import { Button } from "@/components/ui/Button";
 import { ArousalMeter } from "@/components/ui/ArousalMeter";
 import { getFilteredRandomCard } from "@/lib/card-engine";
+import { addDrink } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 import type { GameCard } from "@/types";
 
@@ -48,6 +49,7 @@ export function DrinkingGame() {
           result: "completed",
           points: 10,
         });
+        addDrink();
       }
     }
     setVoting(false);
@@ -58,6 +60,7 @@ export function DrinkingGame() {
   const handleAccept = () => {
     if (!activeCard || !currentPlayer) return;
     setShowResult(true);
+    addDrink();
     addToHistory({
       cardId: activeCard.id,
       playerId: currentPlayer.id,

@@ -1,4 +1,4 @@
-import type { SessionRecord, Achievement, GameCard } from "@/types";
+import type { SessionRecord, Achievement, GameCard, CardPack } from "@/types";
 
 // ============================================================
 // CENTRALIZED LOCAL STORAGE MANAGER
@@ -191,7 +191,7 @@ export function isUnlocked(id: string): boolean {
 // CUSTOM PACKS
 // ============================================================
 
-export function getCustomPacks(): any[] {
+export function getCustomPacks(): CardPack[] {
   if (typeof window === "undefined") return [];
   try {
     return JSON.parse(localStorage.getItem(KEYS.CUSTOM_PACKS) || "[]");
@@ -200,7 +200,7 @@ export function getCustomPacks(): any[] {
   }
 }
 
-export function saveCustomPack(pack: any): void {
+export function saveCustomPack(pack: CardPack): void {
   const packs = getCustomPacks();
   packs.push(pack);
   localStorage.setItem(KEYS.CUSTOM_PACKS, JSON.stringify(packs));
@@ -213,6 +213,16 @@ export function saveCustomPack(pack: any): void {
 export function deleteCustomPack(id: string): void {
   const packs = getCustomPacks().filter((p) => p.id !== id);
   localStorage.setItem(KEYS.CUSTOM_PACKS, JSON.stringify(packs));
+}
+
+// ============================================================
+// DRINK TRACKING
+// ============================================================
+
+export function addDrink(): void {
+  const stats = getStats();
+  stats.drinksTaken += 1;
+  saveStats(stats);
 }
 
 // ============================================================
